@@ -1,12 +1,13 @@
 import React from 'react';
 import {WeatherSelectors} from '../../../store'
-import {connect} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {WeatherCard} from './WeatherCard'
 import css from "./weathertable.module.css";
 
-export class WeatherTableOriginal extends React.Component{
-  render(){
-    const {data}=this.props
+export function WeatherTable(){
+
+  const data=useSelector(WeatherSelectors.getWeather);
+  
 
     const cards=[
       {label: "High/Low", value: `${Math.ceil(data.main.temp_max)} / ${Math.ceil(data.main.temp_min)}`},
@@ -37,11 +38,4 @@ export class WeatherTableOriginal extends React.Component{
   </div>     
       </div>)
   }
-}
 
-const mapStateToProps = (state) => {
-  return {
-    data: WeatherSelectors.getWeather(state),
-  };
-};
-export const WeatherTable=connect(mapStateToProps)(WeatherTableOriginal);

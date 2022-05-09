@@ -4,9 +4,3 @@ export const LOAD_STATUSES = {
   ERROR: 'ERROR',
   UNKNOWN: 'UNKNOW',
 };
-
-export const WeatherActions = {
-  fetchStart: 'fetchStart',
-  fetchError: 'fetchError',
-  fetchSuccess: 'fetchSuccess',
-};

@@ -1,54 +1,27 @@
-import {debounce} from 'lodash';
+
 import React from 'react';
 import {Loader} from './common'
 import css from './app.module.css'
 import {WeatherTable} from './common'
-import {connect} from 'react-redux'
-import {WeatherSelectors,WeatherActions} from '../store'
+import {useWeather} from './hooks'
 
 
-export class AppOriginal extends React.Component{
-  
-  state={
-    city:'',
-  }
+export function App (){
 
-  fetchWeatherDebounced=debounce(this.props.getWeather,1000);
+  const weather=useWeather();
 
-  componentDidUpdate(_, prevState){
-    if(prevState.city!==this.state.city){
-      this.fetchWeatherDebounced({city:this.state.city})
-    }
-    
-
-  }
-  render(){
-    const {city}=this.state;
-    const {isLoading,isLoaded,isError}=this.props;
     return <div className={css.wrapper}>
-      <input className={css.searchbar} value={city} onChange={(event)=>this.setState({city:event.target.value})}/>
-      {isLoading&&<Loader/>}
-      {isError&&<p>Не удалось получить данные, попробуйте изменить запрос</p>}
-      {isLoaded&&(<WeatherTable/>)}
+      <input className={css.searchbar} value={weather.city} onChange={weather.onChangeCity}/>
+      {weather.isLoading&&<Loader/>}
+      {weather.isError&&<p>Не удалось получить данные, попробуйте изменить запрос</p>}
+      {weather.isLoaded&&(<WeatherTable/>)}
     </div>
-  }
+  
   
 }
 
-const mapStateToProps=(state)=>{
-  return{
-    isLoading:WeatherSelectors.isLoading(state),
-    isLoaded:WeatherSelectors.isLoaded(state),
-    isError:WeatherSelectors.isError(state),
-  }
-}
 
-const mapDispatchToProps=(dispatch)=>{
-  return{
-    getWeather:(city)=>dispatch(WeatherActions.fetchWeather(city)),
-  }
-}
 
-export const App= connect(mapStateToProps,mapDispatchToProps)(AppOriginal);
+
 
 
