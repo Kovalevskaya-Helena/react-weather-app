@@ -1,5 +1,7 @@
-import { createStore, applyMiddleware } from 'redux';
-import { reducer } from './reducers';
-import thunk from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
+import { reducer as weatherReducer } from './slice';
 
-export const store = createStore(reducer, applyMiddleware(thunk));
+export const store = configureStore({
+  reducer: weatherReducer,
+  devTools: true,
+});
