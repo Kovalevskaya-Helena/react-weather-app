@@ -1,0 +1,40 @@
+.WeatherBoards{
+  display: grid;
+  grid-gap: 1em 2em;
+  grid-template-columns: 30% auto;
+  padding: 10px;
+  margin: auto;
+}
+.WeatherLeft{
+border: 1px solid #28a2a2;
+box-shadow: 0.15rem 0.15rem 0.5rem rgba(0, 0, 0, 0.1);
+padding: 2rem;
+text-align: center;
+border-radius: 3px;
+background-color: white;
+align-items: center;
+justify-content: center;
+}
+.icon{
+  font-size: 0.5em;
+  margin: 0.5em;
+}
+.degrees{
+  font-size: 4em;
+  margin: 0;
+}
+.WeatherRight{
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 1em 2em;
+  width: 80%;
+  border: 1px solid #28a2a2;
+  box-shadow: 0.15rem 0.15rem 0.5rem rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  text-align: center;
+  border-radius: 3px;
+  background-color: white;
+  align-items: center;
+  justify-content: center;
+}
+

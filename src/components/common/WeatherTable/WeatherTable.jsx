@@ -1,134 +1,47 @@
 import React from 'react';
-import './weathertable.css'
+import {WeatherSelectors} from '../../../store'
+import {connect} from 'react-redux'
+import {WeatherCard} from './WeatherCard'
+import css from "./weathertable.module.css";
 
-export class WeatherTable extends React.Component{
+export class WeatherTableOriginal extends React.Component{
   render(){
-    return(<div className="WeatherBoards">
+    const {data}=this.props
 
-        <div className="WeatherLeft-board">
+    const cards=[
+      {label: "High/Low", value: `${Math.ceil(data.main.temp_max)} / ${Math.ceil(data.main.temp_min)}`},
+      {label: "Wind", value: `${Math.ceil(data.wind.speed)} km/hr`},
+      {label: "Humidity", value: `${data.main.humidity} %`},
+      {label: "Wind Direction", value: `${data.wind.deg} deg`},
+      {label: "Pressure", value: `${data.main.pressure} hPa`},
+      {label: "Sunrise", value: `${new Date(data.sys.sunrise * 1000).toLocaleTimeString()}`},
+      {label: "Visibility", value: `${(data.visibility) / 1000} Km`},
+      {label: "Sunset", value: `${new Date(data.sys.sunset * 1000).toLocaleTimeString()}`}
+    ]
+    
+    return(<div className={css.WeatherBoards}>
 
-          <h1 className="WeatherCard-degrees">{Math.ceil(this.props.temp)}°</h1>
-          <div className="WeatherCard-icon-container">
-            <img src={`http://openweathermap.org/img/wn/${this.props.icon}.png`} />
-            <p>{this.props.mainly} as of {new Date().toLocaleTimeString()}</p> 
+        <div className={css.WeatherLeft}>
+
+          <h1 className={css.degrees}>{Math.ceil(data.main.temp)}°</h1>
+          <div className={css.icon}>
+            <img src={`http://openweathermap.org/img/wn/${data.weather[0].icon}.png`} />
+            <p>{data.weather[0].main} as of {new Date().toLocaleTimeString()}</p> 
           </div>
           <h2 className="WeatherCard-city">
-            {this.props.city}, {this.props.country}
+            {data.name}, {data.sys.country}
           </h2>
-
         </div>
-        <div className="WeatherRight-board">
-
-          <div className="WeatherCard-detail">
-
-            <div>
-              <h4>High/Low</h4>
-            </div>
-            <div>
-              <p>
-                {Math.ceil(this.props.temp_max)}/
-                {Math.ceil(this.props.temp_min)}
-              </p>
-            </div>
-
-          </div>
-
-          <div className="WeatherCard-detail">
-
-            <div>
-              <h4>Wind</h4>
-            </div>
-            <div>
-              <p>
-                {Math.ceil(this.props.speed)} km/hr
-              </p>
-            </div>
-
-          </div>
-
-          <div className="WeatherCard-detail">
-
-            <div>
-              <h4>Humidity</h4>
-            </div>
-            <div>
-              <p>
-                {this.props.humidity} %
-              </p>
-            </div>
-
-          </div>
-
-          <div className="WeatherCard-detail">
-
-            <div>
-              <h4>Wind Direction</h4>
-            </div>
-            <div>
-              <p>
-                {this.props.deg}
-                <sup>o</sup> deg
-              </p>
-            </div>
-
-          </div>
-
-          <div className="WeatherCard-detail">
-
-            <div>
-              <h4>Pressure</h4>
-            </div>
-            <div>
-              <p>
-                {this.props.pressure} hPa
-              </p>
-            </div>
-
-          </div>
-
-          <div className="WeatherCard-detail">
-
-            <div>
-              <h4>Sunrise</h4>
-            </div>
-            <div>
-              <p>
-                {new Date(this.props.sunrise * 1000).toLocaleTimeString()}
-              </p>
-            </div>
-
-          </div>
-
-          <div className="WeatherCard-detail">
-
-            <div>
-              <h4>Visibility</h4>
-            </div>
-            <div>
-              <p>
-                {(this.props.visibility) / 1000} Km
-              </p>
-            </div>
-
-          </div>
-
-          <div className="WeatherCard-detail">
-
-            <div>
-              <h4>Sunset</h4>
-            </div>
-            <div>
-              <p>
-                {new Date(this.props.sunset * 1000).toLocaleTimeString()}
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-
-        
-        
+        <div className={css.WeatherRight}>
+          {cards.map(({label,value})=><WeatherCard label={label} value={value}/>)}
+  </div>     
       </div>)
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    data: WeatherSelectors.getWeather(state),
+  };
+};
+export const WeatherTable=connect(mapStateToProps)(WeatherTableOriginal);
